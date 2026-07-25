@@ -47,5 +47,3 @@ def test_record_batches_contains_values() -> None:
             ColumnVector(StringType(), ["John", "Andrew", "Matthew", "Anne"]),
         ]
     )
-
-    print(record_batch)

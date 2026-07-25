@@ -10,6 +10,33 @@ class BaseType:
     """BaseType is the Apache Arrow's wrapper"""
     name: str = field(init=False)
 
+    @classmethod
+    def deduce_dtype(cls, value) -> typing.Any:
+        parsed_value = cls._parse_value(value)
+
+        match parsed_value:
+            case int():
+                return IntType(32)
+            case float():
+                return FloatType(FloatType.FloatingPrecision.SINGLE)
+            case str():
+                return StringType()
+            case _:
+                raise Exception(f"Unknown type {value}")
+
+    @classmethod
+    def _parse_value(cls, value):
+        if value.isdigit():
+            return int(value)
+
+        if "." in value:
+            try:
+                return float(value)
+            except ValueError:
+                pass
+
+        return str(value)
+
 
 @dataclass(frozen=True)
 class IntType(BaseType):
@@ -72,6 +99,9 @@ class Schema:
 
     def get_field(self, index: int) -> Field:
         return self._fields[index]
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(fields={self._fields})"
 
 
 ### Vectors
