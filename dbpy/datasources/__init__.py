@@ -1,4 +1,5 @@
 import abc
+from typing import Iterator
 
 from dbpy.types import Schema, RecordBatch
 
@@ -16,7 +17,7 @@ class DataSource(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def scan(self, projection: list[str]) -> list[RecordBatch]:
+    def scan(self, projection: list[str]) -> Iterator[RecordBatch]:
         """
         Reads the data and return it as a tuple of record batches
         :param projection: Columns to read

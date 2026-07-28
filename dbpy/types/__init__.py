@@ -100,6 +100,13 @@ class Schema:
     def get_field(self, index: int) -> Field:
         return self._fields[index]
 
+    def get_field_by_name(self, name: str) -> Field:
+        for _field in self._fields:
+            if _field.name == name:
+                return _field
+
+        raise KeyError(f"Field {name!r} does not exist")
+
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(fields={self._fields})"
 
